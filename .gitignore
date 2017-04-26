@@ -6,3 +6,5 @@ protected/data/*.db
 themes/classic/views/
 .idea/
 vendor/
+runtime/
+web/assets/

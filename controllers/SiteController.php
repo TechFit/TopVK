@@ -2,12 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\SignUpForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
 
 class SiteController extends Controller
 {
@@ -64,6 +64,29 @@ class SiteController extends Controller
     }
 
     /**
+     * Sign Up action
+     *
+     * @return string
+     */
+    public function actionSignUp()
+    {
+        $model = new SignUpForm();
+
+        if (Yii::$app->request->post('SignUpForm')) {
+            $model->attributes = Yii::$app->request->post('SignUpForm');
+
+            if ($model->validate() && $model->signup()) {
+                return $this->goHome();
+
+            }
+        }
+
+        return $this->render('sign-up',[
+            'model' => $model
+        ]);
+    }
+
+    /**
      * Login action.
      *
      * @return string
@@ -71,7 +94,7 @@ class SiteController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->actionSignUp();
         }
 
         $model = new LoginForm();
@@ -95,31 +118,4 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    /**
-     * Displays contact page.
-     *
-     * @return string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
 }
