@@ -74,8 +74,6 @@ class LoginForm extends Model
     {
         if ($this->_user === false) {
             $this->_user = Users::findOne(['email' => $this->email]);
-
-            return $this->_user;
         }
 
         return $this->_user;

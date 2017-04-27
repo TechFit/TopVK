@@ -1,14 +1,16 @@
 <?php
-/**
- * Users class
- *
- */
+
 namespace app\models;
 
 
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
+/**
+ * Users class
+ *
+ * @author Maxym Barvinok
+ */
 class Users extends ActiveRecord implements IdentityInterface
 {
     /**
