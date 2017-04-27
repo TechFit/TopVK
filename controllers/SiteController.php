@@ -9,11 +9,16 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 
+/**
+ * Class SiteController
+ *
+ * @package app\controllers
+ *
+ * @author Maxym Barvinok
+ */
 class SiteController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public function behaviors()
     {
         return [
@@ -37,9 +42,7 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public function actions()
     {
         return [
@@ -64,7 +67,7 @@ class SiteController extends Controller
     }
 
     /**
-     * Sign Up action
+     * Displays Sign Up page.
      *
      * @return string
      */
@@ -87,7 +90,7 @@ class SiteController extends Controller
     }
 
     /**
-     * Login action.
+     * Displays Login page.
      *
      * @return string
      */

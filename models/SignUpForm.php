@@ -53,7 +53,7 @@ class SignUpForm extends Model
 
         $user->email = $this->email;
         $user->name = $this->name;
-        $user->password = \Yii::$app->security->generatePasswordHash($this->password);
+        $user->password = \Yii::$app->getSecurity()->generatePasswordHash($this->password);
         $user->save();
     }
 }

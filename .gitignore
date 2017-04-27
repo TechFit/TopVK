@@ -8,3 +8,4 @@ themes/classic/views/
 vendor/
 runtime/
 web/assets/
+tests/*
