@@ -2,12 +2,19 @@
 
 namespace app\controllers;
 
-use app\models\SignUpForm;
+use app\models\SignUpForm,
+    app\models\LoginForm,
+    app\models\AuthHandler;
+
 use Yii;
-use yii\filters\AccessControl;
+
+use yii\filters\AccessControl,
+    yii\filters\VerbFilter;
+
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
+
+use yii\httpclient\Client;
 
 /**
  * Class SiteController
@@ -42,7 +49,10 @@ class SiteController extends Controller
         ];
     }
 
-    /** @inheritdoc */
+    /**
+     * Controllers action map
+     * @inheritdoc
+     */
     public function actions()
     {
         return [
@@ -52,6 +62,10 @@ class SiteController extends Controller
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
+            'auth' => [
+                'class' => 'yii\authclient\AuthAction',
+                'successCallback' => [$this, 'onAuthSuccess'],
             ],
         ];
     }
@@ -119,6 +133,15 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    /**
+     * Social auth action
+     * @param $client
+     */
+    public function onAuthSuccess($client)
+    {
+        (new AuthHandler($client))->handle();
     }
 
 }
