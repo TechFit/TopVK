@@ -51,11 +51,6 @@ $config = [
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',
             'clients' => [
-                'facebook' => [
-                    'class' => 'yii\authclient\clients\Facebook',
-                    'clientId' => 'facebook_client_id',
-                    'clientSecret' => 'facebook_client_secret',
-                ],
                 'vkontakte' => [
                    'class' => 'yii\authclient\clients\VKontakte',
                    'clientId' => '6009134',

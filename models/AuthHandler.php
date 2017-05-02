@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\authclient\ClientInterface;
+use yii\authclient\clients\VKontakte;
 use yii\helpers\ArrayHelper;
 use app\models\Auth,
     app\models\Users;

@@ -2,19 +2,19 @@
 
 namespace app\controllers;
 
+use Yii;
+
 use app\models\SignUpForm,
     app\models\LoginForm,
-    app\models\AuthHandler;
-
-use Yii;
+    app\models\AuthHandler,
+    app\models\Statistics;
 
 use yii\filters\AccessControl,
     yii\filters\VerbFilter;
 
 use yii\helpers\ArrayHelper;
-use yii\web\Controller;
 
-use yii\httpclient\Client;
+use yii\web\Controller;
 
 /**
  * Class SiteController
@@ -77,7 +77,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->render('index',[]);
     }
 
     /**
@@ -99,7 +99,7 @@ class SiteController extends Controller
         }
 
         return $this->render('sign-up',[
-            'model' => $model
+            'model' => $model,
         ]);
     }
 
@@ -142,6 +142,29 @@ class SiteController extends Controller
     public function onAuthSuccess($client)
     {
         (new AuthHandler($client))->handle();
+    }
+
+    /**
+     * @param $ownerId
+     * @return string
+     *
+     * VK statistic page
+     */
+    public function actionStatistics($ownerId)
+    {
+        $statistic = new Statistics();
+
+        $community = $statistic->getCommunityData($ownerId);
+
+        $listOfMaxLikes = $statistic->getTopPost($ownerId, $community);
+
+        $dataAboutPost = $statistic->getWallPostData($ownerId, $listOfMaxLikes['id']);
+
+        return $this->render('statistics', [
+            'community' => $community,
+            'listOfMaxLikes' => $listOfMaxLikes,
+            'dataAboutPost' => $dataAboutPost,
+        ]);
     }
 
 }

@@ -4,7 +4,9 @@
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model app\models\SignUpForm */
 
-use yii\helpers\Html;
+use yii\helpers\Html,
+    yii\helpers\ArrayHelper;
+
 use yii\bootstrap\ActiveForm;
 
 $this->title = 'Регистрация';
@@ -23,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ]);
     ?>
 
-    <?= $form->field($model, 'name')->label('Имя'); ?>
+    <?= $form->field($model, 'username')->label('Имя'); ?>
 
     <?= $form->field($model, 'email')->label('Email'); ?>
 
@@ -43,5 +45,4 @@ $this->params['breadcrumbs'][] = $this->title;
             'popupMode' => false,
         ]) ?>
     </div>
-
 </div>

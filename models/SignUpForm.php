@@ -15,7 +15,7 @@ class SignUpForm extends Model
     public $email;
 
     /** @var string */
-    public $name;
+    public $username;
 
     /** @var string */
     public $password;
@@ -32,9 +32,9 @@ class SignUpForm extends Model
     public function rules()
     {
         return[
-            [['email', 'name', 'password', 'repeat_password'], 'required',],
+            [['email', 'username', 'password', 'repeat_password'], 'required',],
             ['email', 'email'],
-            ['name', 'string', 'min' => 3,],
+            ['username', 'string', 'min' => 3,],
             ['email', 'unique', 'targetClass' => 'app\models\Users',],
             ['password', 'string', 'min' => 2, 'max' => 10,],
             [
@@ -52,7 +52,7 @@ class SignUpForm extends Model
         $user = new Users();
 
         $user->email = $this->email;
-        $user->name = $this->name;
+        $user->username = $this->username;
         $user->password = \Yii::$app->getSecurity()->generatePasswordHash($this->password);
         $user->save();
     }
