@@ -51,26 +51,32 @@ class Statistics
         $responseAboutGroupWall = [];
         $listOfMaxLikes = [];
 
-        for ($i = 1; $i <= $communityData['totalPages']; $i++)
-        {
-            $responseAboutGroupWall['groupWallCount'] = $vk->api('wall.get', 'GET', [
-                'owner_id' => $ownerId,
-                'count' => 100,
-                'offset' => $offset,
-                'fields' => 'description',
-            ]);
+        $cache = Yii::$app->cache;
 
-            foreach (ArrayHelper::getValue($responseAboutGroupWall, 'groupWallCount.response') as $item)
-            {
-                $listOfLikes[ArrayHelper::getValue($item, 'id')] = ArrayHelper::getValue($item, 'likes.count');
+        $listOfMaxLikes = $cache->get('topPost');
+
+        if ($listOfMaxLikes === false) {
+
+            for ($i = 1; $i <= $communityData['totalPages']; $i++) {
+                $responseAboutGroupWall['groupWallCount'] = $vk->api('wall.get', 'GET', [
+                    'owner_id' => $ownerId,
+                    'count' => 100,
+                    'offset' => $offset,
+                    'fields' => 'description',
+                ]);
+
+                foreach (ArrayHelper::getValue($responseAboutGroupWall, 'groupWallCount.response') as $item) {
+                    $listOfLikes[ArrayHelper::getValue($item, 'id')] = ArrayHelper::getValue($item, 'likes.count');
+                }
+
+                $listOfMaxLikes['likes'] = max($listOfLikes);
+                $listOfMaxLikes['id'] = array_search($listOfMaxLikes['likes'], $listOfLikes);
+
+                $offset += 100;
             }
 
-            $listOfMaxLikes['likes'] = max($listOfLikes);
-            $listOfMaxLikes['id'] = array_search($listOfMaxLikes['likes'], $listOfLikes);
-
-            $offset += 100;
+            $cache->set('topPost', $listOfMaxLikes, 3600);
         }
-
         return $listOfMaxLikes;
     }
 
