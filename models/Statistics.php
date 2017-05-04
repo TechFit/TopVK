@@ -44,16 +44,15 @@ class Statistics
      */
     public function getTopPost($ownerId, array $communityData, $offset = 100)
     {
+        $cache = Yii::$app->cache;
+        $key   = 'topPost' . $ownerId;
+
         /** @var  $vk \yii\authclient\OAuth2*/
         $vk = Yii::$app->authClientCollection->getClient('vkontakte');
 
         $listOfLikes = [];
         $responseAboutGroupWall = [];
-        $listOfMaxLikes = [];
-
-        $cache = Yii::$app->cache;
-
-        $listOfMaxLikes = $cache->get('topPost');
+        $listOfMaxLikes  = $cache->get($key);
 
         if ($listOfMaxLikes === false) {
 
@@ -75,8 +74,9 @@ class Statistics
                 $offset += 100;
             }
 
-            $cache->set('topPost', $listOfMaxLikes, 3600);
+            $cache->set($key, $listOfMaxLikes);
         }
+
         return $listOfMaxLikes;
     }
 
