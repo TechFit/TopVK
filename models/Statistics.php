@@ -12,13 +12,14 @@ use yii\helpers\ArrayHelper;
  */
 class Statistics
 {
+    const DEFAULT_API_ID = '-1';
     /**
      * @param $ownerId
      * @return mixed
      *
      * Function for getting count of group posts on the wall
      */
-    public function getCommunityData($ownerId)
+    public function getCommunityData($ownerId = self::DEFAULT_API_ID)
     {
         /** @var  $vk \yii\authclient\OAuth2*/
         $vk = Yii::$app->authClientCollection->getClient('vkontakte');
@@ -36,13 +37,14 @@ class Statistics
     }
 
     /**
-     * @param array $communityData
-     * @param int   $offset
-     * @return array
+     * @param string $ownerId
+     * @param array  $communityData
+     * @param int    $offset
+     * @return bool|mixed
      *
-     * Function for getting post with maximum count of likes
+     *  Function for getting post with maximum count of likes
      */
-    public function getTopPost($ownerId, array $communityData, $offset = 100)
+    public function getTopPost($ownerId = self::DEFAULT_API_ID, array $communityData, $offset = 100)
     {
         $cache = Yii::$app->cache;
         $key   = 'topPost' . $ownerId;
@@ -87,7 +89,7 @@ class Statistics
      *
      * Getting data(for example, text, img, likes etc.) from wall post
      */
-    public function getWallPostData($ownerId, $postId)
+    public function getWallPostData($ownerId = self::DEFAULT_API_ID, $postId)
     {
         /** @var  $vk \yii\authclient\OAuth2*/
         $vk = Yii::$app->authClientCollection->getClient('vkontakte');

@@ -1,13 +1,34 @@
 <?php
 
-use yii\helpers\ArrayHelper;
+use yii\helpers\ArrayHelper,
+    yii\helpers\Html;
+
+use yii\widgets\Pjax,
+    yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 
 $this->title = 'Статистика';
 ?>
-<div class="site-index">
+<div class="statistic-index">
     <div class="container">
+        <div class="loader on">
+            <div class="wrap">
+                <div class="bg">
+                    <div class="loading">
+                        <span class="title">loading</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <?php Pjax::begin(); ?>
+            <?= Html::beginForm('statistics', 'get', ['data-pjax' => '']) ?>
+            <?= Html::input('text', 'ownerId') ?>
+            <?= Html::submitButton() ?>
+            <?= Html::endForm() ?>
+        <?php Pjax::end(); ?>
+
         <p class="btn btn-default">
             Total posts: <b><?= $community['totalPosts']; ?></b>
         </p>

@@ -150,7 +150,7 @@ class SiteController extends Controller
      *
      * VK statistic page
      */
-    public function actionStatistics($ownerId)
+    public function actionStatistics($ownerId = '-1')
     {
         $statistic = new Statistics();
 
