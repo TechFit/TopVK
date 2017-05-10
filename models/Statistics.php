@@ -25,7 +25,7 @@ class Statistics
         $vk = Yii::$app->authClientCollection->getClient('vkontakte');
 
         $communityData['groupWallCount'] = $vk->api('wall.get', 'GET', [
-            'owner_id' => $ownerId,
+            'owner_id' => '-' . $ownerId,
             'count' => 100,
             'fields' => 'count',
         ]);
@@ -60,21 +60,36 @@ class Statistics
 
             for ($i = 1; $i <= $communityData['totalPages']; $i++) {
                 $responseAboutGroupWall['groupWallCount'] = $vk->api('wall.get', 'GET', [
-                    'owner_id' => $ownerId,
+                    'owner_id' => '-' . $ownerId,
                     'count' => 100,
                     'offset' => $offset,
                     'fields' => 'description',
                 ]);
 
                 foreach (ArrayHelper::getValue($responseAboutGroupWall, 'groupWallCount.response') as $item) {
-                    $listOfLikes[ArrayHelper::getValue($item, 'id')] = ArrayHelper::getValue($item, 'likes.count');
+
+                    Yii::$app->db->createCommand()->insert('wall_data', [
+                        'ownerId' => $ownerId,
+                        'post_id' => ArrayHelper::getValue($item, 'id'),
+                        'likes' => ArrayHelper::getValue($item, 'likes.count'),
+                        'date' => date('Y-m-d H:i:s', ArrayHelper::getValue($item, 'date')),
+                    ])->execute();
+
                 }
-
-                $listOfMaxLikes['likes'] = max($listOfLikes);
-                $listOfMaxLikes['id'] = array_search($listOfMaxLikes['likes'], $listOfLikes);
-
                 $offset += 100;
             }
+
+            $wallData = Yii::$app->db->createCommand('
+                    SELECT post_id, MAX(likes) as maxLikes
+                    FROM wall_data
+                    WHERE post_id IS NOT NULL 
+                    GROUP BY post_id
+                    ORDER BY maxLikes
+                    LIMIT 1')
+                ->queryOne();
+
+            $listOfMaxLikes['likes'] = $wallData['maxLikes'];
+            $listOfMaxLikes['id'] = $wallData['post_id'];
 
             $cache->set($key, $listOfMaxLikes);
         }

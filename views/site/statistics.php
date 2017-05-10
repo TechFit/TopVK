@@ -25,26 +25,26 @@ $this->title = 'Статистика';
         <?php Pjax::begin(); ?>
             <?= Html::beginForm('statistics', 'get', ['data-pjax' => '']) ?>
             <?= Html::input('text', 'ownerId') ?>
-            <?= Html::submitButton() ?>
+            <?= Html::submitButton('Отправить', ['class' => 'flat_button secondary']) ?>
             <?= Html::endForm() ?>
         <?php Pjax::end(); ?>
-
-        <p class="btn btn-default">
-            Total posts: <b><?= $community['totalPosts']; ?></b>
-        </p>
-        <p class="btn btn-default">
-            Total pages: <b><?= $community['totalPages']; ?></b>
-        </p>
-        <p class="btn btn-default">
-            Total post Id: <b><?= $listOfMaxLikes['id'] ?> </b>
-        </p>
-        <p class="btn btn-default">
-            Total Likes of post: <b><?= $listOfMaxLikes['likes'] ?> </b>
-        </p>
-        <p>
-            <?= date('Y-m-d H:i:s', ArrayHelper::getValue($dataAboutPost, 'response.0.date')); ?>
-        </p>
-
+        <div class="data-stats">
+            <p class="btn btn-default">
+                Total posts: <b><?= $community['totalPosts']; ?></b>
+            </p>
+            <p class="btn btn-default">
+                Total pages: <b><?= $community['totalPages']; ?></b>
+            </p>
+            <p class="btn btn-default">
+                Total post Id: <b><?= $listOfMaxLikes['id'] ?> </b>
+            </p>
+            <p class="btn btn-default">
+                Total Likes of post: <b><?= $listOfMaxLikes['likes'] ?> </b>
+            </p>
+            <p>
+                <?= date('Y-m-d H:i:s', ArrayHelper::getValue($dataAboutPost, 'response.0.date')); ?>
+            </p>
+        </div>
         <p>
             <?= ArrayHelper::getValue($dataAboutPost, 'response.0.text'); ?>
         </p>
