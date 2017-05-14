@@ -6,8 +6,7 @@ use Yii;
 
 use app\models\SignUpForm,
     app\models\LoginForm,
-    app\models\AuthHandler,
-    app\models\Statistics;
+    app\models\AuthHandler;
 
 use yii\filters\AccessControl,
     yii\filters\VerbFilter;
@@ -143,28 +142,4 @@ class SiteController extends Controller
     {
         (new AuthHandler($client))->handle();
     }
-
-    /**
-     * @param $ownerId
-     * @return string
-     *
-     * VK statistic page
-     */
-    public function actionStatistics($ownerId = '-1')
-    {
-        $statistic = new Statistics();
-
-        $community = $statistic->getCommunityData($ownerId);
-
-        $listOfMaxLikes = $statistic->getTopPost($ownerId, $community);
-
-        $dataAboutPost = $statistic->getWallPostData($ownerId, $listOfMaxLikes['id']);
-
-        return $this->render('statistics', [
-            'community' => $community,
-            'listOfMaxLikes' => $listOfMaxLikes,
-            'dataAboutPost' => $dataAboutPost,
-        ]);
-    }
-
 }

@@ -38,7 +38,7 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Главная', 'url' => ['/site/index']],
             Yii::$app->user->isGuest ? '' : (
-            ['label' => 'Статистика', 'url' => ['/site/statistics']]
+            ['label' => 'Статистика', 'url' => ['/statistic/group']]
             ),
             Yii::$app->user->isGuest ? (
             ['label' => 'Регистрация', 'url' => ['/site/sign-up']]
